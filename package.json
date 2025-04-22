@@ -1,0 +1,29 @@
+{
+  "name": "spring-party-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.7",
+    "framer-motion": "^11.0.17",
+    "gsap": "^3.12.5",
+    "next": "14.2.3",
+    "qrcode.react": "^4.2.0",
+    "react": "18.2.0",
+    "react-calendar": "^5.1.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^5.2.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.10.7",
+    "autoprefixer": "^10.4.15",
+    "postcss": "^8.4.34",
+    "tailwindcss": "^3.4.3"
+  }
+}
