@@ -74,6 +74,8 @@ export default function Musica() {
   const bgRef = useRef(null);
   const [cantidades, setCantidades] = useState([0, 0, 0]);
   const [musicaFavorita, setMusicaFavorita] = useState(['', '', '', '', '', '', '', '', '', '']);
+  const [isModified, setIsModified] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     const handleMove = (e) => {
@@ -164,11 +166,25 @@ export default function Musica() {
                     const nuevas = [...musicaFavorita];
                     nuevas[idx] = e.target.value;
                     setMusicaFavorita(nuevas);
+                    setIsModified(true);
                   }}
                   placeholder="Escribe aquí tu canción o género favorito"
                 />
               </div>
             ))}
+            <button
+              className={`w-full mt-4 py-3 rounded-xl font-bold text-lg shadow-md transition-all duration-200 ${isModified ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-white hover:from-cyan-500 hover:to-green-500' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+              disabled={!isModified || isSaving}
+              onClick={async () => {
+                setIsSaving(true);
+                // Aquí va la lógica de guardado (ejemplo: llamada a Supabase)
+                // await guardarMusica(selectedEvent, musicaFavorita);
+                setIsModified(false);
+                setIsSaving(false);
+              }}
+            >
+              {isSaving ? 'Guardando...' : 'Confirmar y guardar lista musical'}
+            </button>
           </div>
         )}
       </main>
