@@ -106,7 +106,6 @@ export default function Musica() {
   // Cargar la música guardada al seleccionar evento
   useEffect(() => {
     if (!selectedEvent) return;
-    setMusicaFavorita(['', '', '', '', '']);
     setIsModified(false);
     supabase
       .from('festejos')
@@ -141,6 +140,12 @@ export default function Musica() {
   const totalMonto = cantidades.reduce((sum, cant, idx) => sum + cant * PAQUETES[idx].precio, 0);
 
   const maxRenglones = 5;
+
+  useEffect(() => {
+    if (musicaFavorita.length !== maxRenglones) {
+      setMusicaFavorita((prev) => prev.slice(0, maxRenglones).concat(Array(maxRenglones).fill('')).slice(0, maxRenglones));
+    }
+  }, [musicaFavorita]);
 
   return (
     <>
@@ -189,7 +194,6 @@ export default function Musica() {
                   <input
                     type="text"
                     className="w-full px-4 py-2 rounded-xl border border-blue-100 shadow focus:ring-2 focus:ring-blue-300 bg-white/80 text-gray-700 text-base"
-                    maxLength={60}
                     value={cancion || ''}
                     onChange={e => {
                       const nuevas = [...musicaFavorita];
@@ -197,7 +201,7 @@ export default function Musica() {
                       setMusicaFavorita(nuevas);
                       setIsModified(true);
                     }}
-                    placeholder="Escribe aquí tu canción o género favorito"
+                    maxLength={50}
                   />
                 </div>
               ))}
@@ -249,8 +253,6 @@ export default function Musica() {
               >
                 {isSaving ? 'Guardando...' : 'Confirmar y guardar lista musical'}
               </button>
-              <div style={{marginTop:12, color: saveStatus.startsWith('Error') ? 'red' : 'green', fontWeight:'bold'}}>{saveStatus}</div>
-              <div style={{marginTop:8, fontSize:12, color:'#666'}}>User ID: {currentUserId}<br/>Evento seleccionado: {selectedEvent}</div>
             </div>
           )}
         </main>
