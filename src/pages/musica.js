@@ -78,7 +78,7 @@ export default function Musica() {
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
   const bgRef = useRef(null);
   const [cantidades, setCantidades] = useState([0, 0, 0]);
-  const [musicaFavorita, setMusicaFavorita] = useState(['', '', '', '', '', '', '', '', '', '']);
+  const [musicaFavorita, setMusicaFavorita] = useState(['', '', '', '', '']);
   const [isModified, setIsModified] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -106,7 +106,7 @@ export default function Musica() {
   // Cargar la música guardada al seleccionar evento
   useEffect(() => {
     if (!selectedEvent) return;
-    setMusicaFavorita(['', '', '', '', '', '', '', '', '', '']);
+    setMusicaFavorita(['', '', '', '', '']);
     setIsModified(false);
     supabase
       .from('festejos')
@@ -115,11 +115,11 @@ export default function Musica() {
       .single()
       .then(({ data, error }) => {
         if (!error && data && Array.isArray(data.musica_favorita)) {
-          // Rellenar hasta 10 valores
-          const arr = data.musica_favorita.concat(Array(10).fill('')).slice(0, 10);
+          // Rellenar hasta 5 valores
+          const arr = data.musica_favorita.concat(Array(5).fill('')).slice(0, 5);
           setMusicaFavorita(arr);
         } else {
-          setMusicaFavorita(['', '', '', '', '', '', '', '', '', '']);
+          setMusicaFavorita(['', '', '', '', '']);
         }
       });
   }, [selectedEvent]);
@@ -140,9 +140,10 @@ export default function Musica() {
   const totalPaquetes = cantidades.reduce((a, b) => a + b, 0);
   const totalMonto = cantidades.reduce((sum, cant, idx) => sum + cant * PAQUETES[idx].precio, 0);
 
+  const maxRenglones = 5;
+
   return (
     <>
-      <div style={{background:'#ff0',padding:20,fontSize:24,textAlign:'center'}}>PRUEBA DE DEPLOY VISIBLE - SI VES ESTE MENSAJE, ESTÁS VIENDO EL CÓDIGO ACTUALIZADO</div>
       <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#b8f3ff] to-[#d7ffe7] overflow-hidden pt-6 sm:pt-10">
         <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10">
           <div className="flex flex-col items-center justify-center mb-4">
@@ -182,17 +183,17 @@ export default function Musica() {
           {selectedEvent && (
             <div className="w-full mb-6">
               <div className="font-bold text-xl text-center text-blue-900 mb-4">Música para: {festejos.find(f => f.id === selectedEvent)?.titulo || festejos.find(f => f.id === selectedEvent)?.nombre_festejo || 'Sin título'}</div>
-              {[...Array(10)].map((_, idx) => (
-                <div key={idx} className="mb-4">
-                  <label className="block text-base font-semibold text-gray-700 mb-1">Canción o género favorito #{idx+1}</label>
+              {musicaFavorita.slice(0, maxRenglones).map((cancion, index) => (
+                <div key={index} className="mb-4">
+                  <label className="block text-base font-semibold text-gray-700 mb-1">Canción o género favorito #{index+1}</label>
                   <input
                     type="text"
                     className="w-full px-4 py-2 rounded-xl border border-blue-100 shadow focus:ring-2 focus:ring-blue-300 bg-white/80 text-gray-700 text-base"
                     maxLength={60}
-                    value={musicaFavorita[idx] || ''}
+                    value={cancion || ''}
                     onChange={e => {
                       const nuevas = [...musicaFavorita];
-                      nuevas[idx] = e.target.value;
+                      nuevas[index] = e.target.value;
                       setMusicaFavorita(nuevas);
                       setIsModified(true);
                     }}
@@ -235,7 +236,7 @@ export default function Musica() {
                       .single()
                       .then(({ data, error }) => {
                         if (!error && data && Array.isArray(data.musica_favorita)) {
-                          const arr = data.musica_favorita.concat(Array(10).fill('')).slice(0, 10);
+                          const arr = data.musica_favorita.concat(Array(5).fill('')).slice(0, 5);
                           setMusicaFavorita(arr);
                         }
                       });
@@ -254,15 +255,6 @@ export default function Musica() {
           )}
         </main>
         <BotonHome className="fixed bottom-6 right-6 z-50 animate-float shadow-xl" />
-        <button
-          onClick={async () => {
-            const { data } = await supabase.auth.getUser();
-            alert("Tu user_id es: " + (data?.user?.id || 'No autenticado'));
-          }}
-          style={{ position: 'fixed', bottom: 10, right: 10, zIndex: 9999, background: '#fff', border: '1px solid #ccc', padding: 8, borderRadius: 8 }}
-        >
-          Mostrar user_id
-        </button>
       </div>
     </>
   );
