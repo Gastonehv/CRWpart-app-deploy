@@ -224,10 +224,9 @@ export default function Musica() {
                     return;
                   }
                   setSaveStatus('Guardando...');
-                  console.log('Guardando música para:', selectedEvent, musicaFavorita);
                   const { error } = await supabase
                     .from('festejos')
-                    .update({ musica_favorita: musicaFavorita })
+                    .update({ musica_favorita: musicaFavorita.slice(0, maxRenglones) })
                     .eq('id', selectedEvent);
                   if (!error) {
                     setIsModified(false);
@@ -240,13 +239,12 @@ export default function Musica() {
                       .single()
                       .then(({ data, error }) => {
                         if (!error && data && Array.isArray(data.musica_favorita)) {
-                          const arr = data.musica_favorita.concat(Array(5).fill('')).slice(0, 5);
+                          const arr = data.musica_favorita.concat(Array(maxRenglones).fill('')).slice(0, maxRenglones);
                           setMusicaFavorita(arr);
                         }
                       });
                   } else {
                     setSaveStatus('Error al guardar la lista musical: ' + error.message);
-                    console.error('Supabase error:', error);
                   }
                   setIsSaving(false);
                 }}
