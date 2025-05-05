@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import useFestejos from '../hooks/useFestejos';
 import { supabase } from '../lib/supabaseClient';
 import BotonHome from '../components/BotonHome';
+import CustomSelect from '../components/CustomSelect';
+import { motion } from 'framer-motion';
 
 const FESTIVE_PLAYLISTS = [
   {
@@ -148,114 +150,110 @@ export default function Musica() {
   }, [musicaFavorita]);
 
   return (
-    <>
-      <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#b8f3ff] to-[#d7ffe7] overflow-hidden pt-6 sm:pt-10">
-        <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10">
-          <div className="flex flex-col items-center justify-center mb-4">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-100 to-green-100 shadow-lg mb-2 animate-bounce-slow">
-              {/* Ícono musical bicolor */}
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-                <path d="M9 17V5l12-2v12" stroke="#06b6d4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <circle cx="6" cy="18" r="3" stroke="#22d3ee" strokeWidth="2"/>
-                <circle cx="18" cy="16" r="3" stroke="#22c55e" strokeWidth="2"/>
-              </svg>
-            </span>
-            <h2 className="text-2xl font-bold text-center mb-2 bg-gradient-to-r from-cyan-400 via-green-400 to-green-600 bg-clip-text text-transparent drop-shadow-md animate-gradient-x">
-              Seleccionar música
-            </h2>
-          </div>
-          {/* Selección de evento */}
-          <div className="mb-6">
-            <label htmlFor="evento" className="block text-lg font-semibold text-gray-700 mb-2">Selecciona tu evento:</label>
-            <select
-              id="evento"
-              className="w-full px-4 py-2 rounded-xl border border-fuchsia-100 shadow focus:ring-2 focus:ring-fuchsia-300 bg-white/80 text-gray-700 text-base mb-2"
-              value={selectedEvent}
-              onChange={e => setSelectedEvent(e.target.value)}
-              disabled={loading || !festejos || festejos.length === 0}
-            >
-              <option value="" disabled>Selecciona un evento</option>
-              {festejos && festejos.length > 0 ? (
-                festejos.map(f => (
-                  <option key={f.id} value={f.id}>{f.titulo || f.nombre_festejo || 'Sin título'}</option>
-                ))
-              ) : (
-                <option value="" disabled>No tienes eventos disponibles</option>
-              )}
-            </select>
-          </div>
-          {/* Opciones de música, solo si hay evento seleccionado */}
-          {selectedEvent && (
-            <div className="w-full mb-6">
-              <div className="font-bold text-xl text-center text-blue-900 mb-4">Música para: {festejos.find(f => f.id === selectedEvent)?.titulo || festejos.find(f => f.id === selectedEvent)?.nombre_festejo || 'Sin título'}</div>
-              {musicaFavorita.slice(0, maxRenglones).map((cancion, index) => (
-                <div key={index} className="mb-4">
-                  <label className="block text-base font-semibold text-gray-700 mb-1">Canción o género favorito #{index+1}</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-2 rounded-xl border border-blue-100 shadow focus:ring-2 focus:ring-blue-300 bg-white/80 text-gray-700 text-base"
-                    value={cancion || ''}
-                    onChange={e => {
-                      const nuevas = [...musicaFavorita];
-                      nuevas[index] = e.target.value;
-                      setMusicaFavorita(nuevas);
-                      setIsModified(true);
-                    }}
-                    maxLength={50}
-                  />
-                </div>
-              ))}
-              <button
-                className={`w-full mt-4 py-3 rounded-xl font-bold text-lg shadow-md transition-all duration-200 ${isModified ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-white hover:from-cyan-500 hover:to-green-500' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
-                disabled={!isModified || isSaving}
-                onClick={async () => {
-                  setIsSaving(true);
-                  setSaveStatus("");
-                  if (!selectedEvent) {
-                    setSaveStatus('No hay evento seleccionado.');
-                    setIsSaving(false);
-                    return;
-                  }
-                  // Al menos un valor no vacío
-                  const tieneMusica = musicaFavorita.some(m => m && m.trim() !== '');
-                  if (!tieneMusica) {
-                    setSaveStatus('Debes ingresar al menos una canción o género.');
-                    setIsSaving(false);
-                    return;
-                  }
-                  setSaveStatus('Guardando...');
-                  const { error } = await supabase
-                    .from('festejos')
-                    .update({ musica_favorita: musicaFavorita.slice(0, maxRenglones) })
-                    .eq('id', selectedEvent);
-                  if (!error) {
-                    setIsModified(false);
-                    setSaveStatus('¡Lista musical guardada con éxito!');
-                    // Refresca para mostrar lo guardado
-                    supabase
-                      .from('festejos')
-                      .select('musica_favorita')
-                      .eq('id', selectedEvent)
-                      .single()
-                      .then(({ data, error }) => {
-                        if (!error && data && Array.isArray(data.musica_favorita)) {
-                          const arr = data.musica_favorita.concat(Array(maxRenglones).fill('')).slice(0, maxRenglones);
-                          setMusicaFavorita(arr);
-                        }
-                      });
-                  } else {
-                    setSaveStatus('Error al guardar la lista musical: ' + error.message);
-                  }
-                  setIsSaving(false);
-                }}
-              >
-                {isSaving ? 'Guardando...' : 'Confirmar y guardar lista musical'}
-              </button>
-            </div>
-          )}
-        </main>
-        <BotonHome className="fixed bottom-6 right-6 z-50 animate-float shadow-xl" />
+    <div className="relative min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#b8f3ff] to-[#d7ffe7] overflow-hidden pt-2 sm:pt-4 pb-6">
+      <div className="flex flex-col items-center mb-8 mt-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+          className="flex items-center justify-center w-36 h-36 relative p-0"
+        >
+          <img src="/logo.png" alt="CRW party logo" className="w-[97%] h-[97%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+          <div className="absolute inset-0 rounded-2xl shadow-[0_0_28px_5px_rgba(167,139,250,0.16)] pointer-events-none" style={{ zIndex: 1 }} />
+        </motion.div>
+        <h1 className="text-3xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Música</h1>
       </div>
-    </>
+      {/* HEADER BLOQUE BLANCO */}
+      <div className="w-full max-w-xs mx-auto flex flex-col items-center">
+        <div className="bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-6 w-full flex flex-col items-center">
+          <p className="text-base text-gray-700 text-center mb-0">Selecciona tu evento para elegir la playlist perfecta y marcar el ritmo de la noche.</p>
+        </div>
+        {/* SELECT EVENTO */}
+        <div id="bloque-select-evento" className="bg-white/90 rounded-3xl shadow-2xl px-4 py-6 mb-10 w-full flex flex-col items-center max-w-xs mx-auto">
+          <CustomSelect
+            options={
+              [{ value: '', label: 'Selecciona un evento', disabled: true }].concat(
+                (festejos || []).map(f => ({ value: f.id, label: f.titulo || f.nombre_festejo || 'Sin título' }))
+              )
+            }
+            value={selectedEvent}
+            onChange={val => setSelectedEvent(val)}
+            label={"Selecciona tu evento:"}
+            dropdownWidthClass="max-w-xs w-full"
+            alignLeft={true}
+          />
+        </div>
+        {/* INPUTS DE MÚSICA */}
+        {selectedEvent && (
+          <div className="bg-white/90 rounded-3xl shadow-2xl px-4 py-6 mb-8 w-full flex flex-col items-center">
+            <div className="font-bold text-xl text-center text-blue-900 mb-4">Música para: {festejos.find(f => f.id === selectedEvent)?.titulo || festejos.find(f => f.id === selectedEvent)?.nombre_festejo || 'Sin título'}</div>
+            {musicaFavorita.slice(0, maxRenglones).map((cancion, index) => (
+              <div key={index} className="mb-4 w-full flex flex-col items-center">
+                <label className="block text-base font-semibold text-gray-700 mb-1 text-center">Canción o género favorito #{index+1}</label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 rounded-xl border border-blue-100 shadow focus:ring-2 focus:ring-blue-300 bg-white/80 text-gray-700 text-base text-center"
+                  value={cancion || ''}
+                  onChange={e => {
+                    const nuevas = [...musicaFavorita];
+                    nuevas[index] = e.target.value;
+                    setMusicaFavorita(nuevas);
+                    setIsModified(true);
+                  }}
+                  maxLength={50}
+                />
+              </div>
+            ))}
+            <button
+              className={`w-full mt-4 py-3 rounded-xl font-bold text-lg shadow-md transition-all duration-200 ${isModified ? 'bg-gradient-to-r from-cyan-400 to-green-400 text-white hover:from-cyan-500 hover:to-green-500' : 'bg-gray-200 text-gray-400 cursor-not-allowed'}`}
+              disabled={!isModified || isSaving}
+              onClick={async () => {
+                setIsSaving(true);
+                setSaveStatus("");
+                if (!selectedEvent) {
+                  setSaveStatus('No hay evento seleccionado.');
+                  setIsSaving(false);
+                  return;
+                }
+                // Al menos un valor no vacío
+                const tieneMusica = musicaFavorita.some(m => m && m.trim() !== '');
+                if (!tieneMusica) {
+                  setSaveStatus('Debes ingresar al menos una canción o género.');
+                  setIsSaving(false);
+                  return;
+                }
+                setSaveStatus('Guardando...');
+                const { error } = await supabase
+                  .from('festejos')
+                  .update({ musica_favorita: musicaFavorita.slice(0, maxRenglones) })
+                  .eq('id', selectedEvent);
+                if (!error) {
+                  setIsModified(false);
+                  setSaveStatus('¡Lista musical guardada con éxito!');
+                  // Refresca para mostrar lo guardado
+                  supabase
+                    .from('festejos')
+                    .select('musica_favorita')
+                    .eq('id', selectedEvent)
+                    .single()
+                    .then(({ data, error }) => {
+                      if (!error && data && Array.isArray(data.musica_favorita)) {
+                        const arr = data.musica_favorita.concat(Array(maxRenglones).fill('')).slice(0, maxRenglones);
+                        setMusicaFavorita(arr);
+                      }
+                    });
+                } else {
+                  setSaveStatus('Error al guardar la lista musical: ' + error.message);
+                }
+                setIsSaving(false);
+              }}
+            >
+              {isSaving ? 'Guardando...' : 'Confirmar y guardar lista musical'}
+            </button>
+          </div>
+        )}
+      </div>
+      <BotonHome className="fixed bottom-6 right-6 z-50 animate-float shadow-xl" />
+    </div>
   );
 }

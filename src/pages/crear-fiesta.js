@@ -28,7 +28,6 @@ export default function CrearFestejo() {
     paquete: '',
     notas: '',
     cantidades: [0, 0, 0],
-    musica: ['', '', '', '', ''],
   });
   const [logoUrl, setLogoUrl] = useState('');
   const [estado, setEstado] = useState('borrador'); // borrador | pendiente_pago | creado
@@ -117,7 +116,6 @@ export default function CrearFestejo() {
         nombre_festejo: form.nombre,
         fecha_tentativa: form.fecha,
         paquetes_cantidades: form.cantidades, // array de cantidades por paquete
-        musica_sugerida: form.musica,         // array de música sugerida
         notas: form.notas,
         estado: 'pendiente_pago',
       },
@@ -135,7 +133,6 @@ export default function CrearFestejo() {
       paquete: '',
       notas: '',
       cantidades: [0, 0, 0],
-      musica: ['', '', '', '', ''],
     });
     setFeedback('¡Tu plan de festejo ha sido guardado! Recuerda que debes completar el pago para activarlo.');
   };
@@ -147,12 +144,6 @@ export default function CrearFestejo() {
     const next = form.cantidades.slice();
     next[idx] = Math.max(0, val);
     setForm(f => ({ ...f, cantidades: next }));
-  }
-
-  function handleMusica(idx, val) {
-    const next = form.musica.slice();
-    next[idx] = val;
-    setForm(f => ({ ...f, musica: next }));
   }
 
   if (estado === 'pendiente_pago') {
@@ -209,31 +200,23 @@ export default function CrearFestejo() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#fffbe0] to-[#ffd6d6] overflow-hidden pt-6 sm:pt-10">
-      <div className="flex justify-center mt-6 mb-4">
-        <img src="/logo.png" alt="Logo CRWapp" className="h-16 w-auto drop-shadow-lg rounded-xl" style={{ objectFit: 'contain' }} />
+      <div className="flex flex-col items-center justify-center mb-6 mt-10" style={{ minHeight: '144px' }}>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+          className="flex items-center justify-center w-36 h-36 rounded-2xl relative p-0"
+          style={{ margin: '0 auto', background: 'none', boxShadow: 'none' }}
+        >
+          <img src="/logo.png" alt="CRW party logo" className="w-[97%] h-[97%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+        </motion.div>
+      </div>
+      <h1 className="text-3xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Crear Fiesta</h1>
+      <div className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-8 flex flex-col items-center justify-center">
+        <h2 className="text-3xl font-extrabold text-center mb-2 text-yellow-500 font-display">Crear Festejo</h2>
+        <p className="text-base text-gray-700 text-center mb-4">Completa los datos para crear tu evento premium.</p>
       </div>
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10 flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center mb-4">
-          <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-100 to-pink-100 shadow-lg mb-2 animate-bounce-slow">
-            {/* Ícono de globo bicolor */}
-            <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-              <ellipse cx="12" cy="10" rx="7" ry="8" stroke="#f472b6" strokeWidth="2" fill="#fffbe0"/>
-              <path d="M12 18c1.5 0 2.5-2 2.5-4" stroke="#facc15" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M12 18v3" stroke="#f472b6" strokeWidth="2" strokeLinecap="round"/>
-              <circle cx="10.5" cy="9" r="1" fill="#f472b6"/>
-              <circle cx="13.5" cy="11" r="1" fill="#facc15"/>
-            </svg>
-          </span>
-          <h2 className="text-2xl font-bold text-center mb-2 bg-gradient-to-r from-pink-400 via-yellow-400 to-fuchsia-600 bg-clip-text text-transparent drop-shadow-md animate-gradient-x">
-            Crear Festejo
-          </h2>
-        </div>
-        {/* Mensaje premium sin checklist ni repetición */}
-        <div className="flex flex-col items-center mb-4">
-          <p className="text-center text-gray-600 text-base font-medium bg-white/70 px-4 py-2 rounded-xl shadow border border-fuchsia-100 animate-fadein">
-            Completa los datos para crear tu evento premium.
-          </p>
-        </div>
         <div className="text-center text-gray-700 text-sm mb-6">Tus festejos existentes:</div>
         {/* ...listado de festejos... */}
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -271,15 +254,6 @@ export default function CrearFestejo() {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="notas">Notas o peticiones especiales <span className="text-gray-400">(opcional)</span></label>
             <textarea name="notas" id="notas" value={form.notas} onChange={handleChange} className="w-full px-4 py-3 rounded-xl bg-white/60 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400 shadow-md transition-all" placeholder="Ej: Quiero inflables extra, DJ de reggaetón, etc." rows={3} aria-label="Notas o peticiones especiales" aria-required="false" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Música (hasta 5 sugerencias)</label>
-            <div className="flex flex-col gap-2">
-              {form.musica.map((val, idx) => (
-                <input key={idx} type="text" className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-200 focus:border-orange-400 text-sm transition-all" placeholder={`Sugerencia musical ${idx+1}`} value={val} onChange={e => handleMusica(idx, e.target.value)} aria-label={`Sugerencia musical ${idx+1}`} aria-required="false" />
-              ))}
-            </div>
-            <div className="mt-1 text-xs text-gray-500">Puedes escribir canciones, géneros, artistas o cualquier preferencia musical.</div>
           </div>
           {feedback && (
             <motion.div

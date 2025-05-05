@@ -25,7 +25,7 @@ export default function FloatingActionButton({ onClick }) {
         boxShadow: getRandomShadow(),
         transition: 'box-shadow 0.5s cubic-bezier(.4,0,.2,1), transform 0.22s cubic-bezier(.4,0,.2,1)',
       }}
-      aria-label="Nueva reserva"
+      aria-label="Nuevo festejo"
       tabIndex={0}
     >
       <svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{minWidth:'28px',minHeight:'28px'}} aria-hidden="true">

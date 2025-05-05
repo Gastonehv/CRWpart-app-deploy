@@ -50,11 +50,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-fuchsia-50 to-cyan-50">
-      <AnimatedBackground />
-      <main className="relative z-10 w-full max-w-sm mx-auto px-4 py-8 glass-card rounded-3xl shadow-2xl">
-        <h1 className="text-2xl font-extrabold premium-title mb-6 text-center">Iniciar sesión</h1>
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black">
+      <div className="w-full max-w-xs mx-auto bg-[#181818] rounded-3xl border border-[#a259ff] shadow-2xl px-6 py-8 flex flex-col items-center justify-center">
+        <img src="/logo.png" alt="CRW party logo" className="w-24 h-24 object-contain mb-4 rounded-2xl" />
+        <h2 className="text-2xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Iniciar sesión</h2>
+        <form onSubmit={handleSubmit} className="w-full flex flex-col gap-4 mt-4">
           <FormInput
             label="Correo electrónico"
             type="email"
@@ -87,12 +87,10 @@ export default function Login() {
             {feedback}
           </motion.div>
         )}
-        <div className="mt-6 text-center">
-          <Link href="/auth/register" className="text-aqua-700 underline">
-            ¿No tienes cuenta? Regístrate
-          </Link>
+        <div className="flex flex-col gap-2 mt-6 w-full">
+          <Link href="/auth/register" className="dashboard-btn w-full py-2 text-center" aria-label="Crear cuenta">Crear cuenta</Link>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

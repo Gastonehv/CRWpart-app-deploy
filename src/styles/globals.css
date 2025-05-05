@@ -8,19 +8,38 @@ html {
 
 body {
   font-family: 'Inter', sans-serif;
-  background: linear-gradient(120deg, #eafaf6 0%, #fbeafc 100%);
+  background: #000000;
   min-height: 100vh;
   transition: background 0.7s cubic-bezier(.4,0,.2,1);
-  color: #1e293b;
-}
-
-.dark body {
-  background: linear-gradient(120deg, #23272e 0%, #2d3748 100%);
+  color: #fff;
 }
 
 ::-webkit-scrollbar {
   width: 0;
   background: transparent;
+}
+
+/* Tarjetas y botones dashboard */
+.dashboard-card {
+  background: #181818;
+  border-radius: 1.5rem;
+  border: 1.5px solid #a259ff;
+  box-shadow: 0 4px 32px 0 #00e0ff44, 0 1.5px 10px #a259ff88;
+}
+
+.dashboard-btn {
+  background: linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px 0 #00e0ff33;
+  transition: background 0.7s, box-shadow 0.3s;
+}
+
+.dashboard-btn:hover {
+  background: linear-gradient(90deg, #a259ff, #00e0ff, #ffe600, #ff6b00);
+  box-shadow: 0 6px 32px 0 #a259ff55;
 }
 
 /* Glassmorphism y detalles premium */

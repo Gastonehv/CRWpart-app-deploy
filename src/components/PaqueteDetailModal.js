@@ -86,7 +86,7 @@ export default function PaqueteDetailModal({ open, onClose, paquete }) {
           >
             <svg width="28" height="28" fill="none" viewBox="0 0 24 24"><path d="M6 6l12 12M6 18L18 6" stroke="#a21caf" strokeWidth="2.5" strokeLinecap="round"/></svg>
           </button>
-          <div className="flex flex-col items-center gap-3 mt-6">
+          <div className="flex flex-col items-start gap-3 mt-6">
             {/* Miniatura de video principal */}
             {video && (
               <div className="relative w-full flex justify-center mb-3">
@@ -125,6 +125,16 @@ export default function PaqueteDetailModal({ open, onClose, paquete }) {
                 ))}
               </div>
             )}
+            {/* Título */}
+            <h2 className="text-2xl font-bold text-left mb-2">{paquete?.nombre || 'Paquete'}</h2>
+            {/* Descripción */}
+            <p className="text-base text-gray-700 text-left mb-2">{paquete?.descripcion}</p>
+            {/* Beneficios */}
+            <ul className="list-disc pl-5 text-gray-600 text-sm mb-2 text-left">
+              {paquete?.beneficios?.map((b, i) => (
+                <li key={i} className="text-left">{b}</li>
+              ))}
+            </ul>
             {/* Modal multimedia expandido (foto o video) */}
             <AnimatePresence>
               {expandedMedia && (

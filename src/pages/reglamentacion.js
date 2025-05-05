@@ -7,6 +7,9 @@ export default function Reglamentacion() {
     <div className="relative min-h-screen flex items-center justify-center bg-white overflow-hidden pt-6 sm:pt-10">
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10">
         <div className="flex flex-col items-center mb-8">
+          <div className="mb-6 flex items-center justify-center w-28 h-28 relative">
+            <img src="/logo.png" alt="CRW party logo" className="w-20 h-20 object-contain" style={{ zIndex: 2, background: 'none', boxShadow: 'none' }} />
+          </div>
           <span className="text-6xl mb-4">📜</span>
           <h2 className="text-3xl font-extrabold text-gray-700 mb-2 text-center font-display">Reglamentación</h2>
           <p className="text-lg text-gray-500 mb-6 text-center max-w-sm">

@@ -51,17 +51,11 @@ export default function AdminPanel() {
       if (usersError) setError('Error al cargar usuarios.');
       else setUsers(usersData);
       // Get all festejos
-      // Intenta primero fecha_tentativa, si no existe usa fecha
-      let festejosData = [], festejosError = null;
-      let res = await supabase.from('festejos').select('*').order('fecha_tentativa', { ascending: false });
-      festejosData = res.data; festejosError = res.error;
-      if (festejosError && festejosError.message.includes('column')) {
-        // Si no existe fecha_tentativa, intenta con fecha
-        res = await supabase.from('festejos').select('*').order('fecha', { ascending: false });
-        festejosData = res.data; festejosError = res.error;
-      }
-      if (festejosError) setError('Error al cargar festejos.');
-      else setFestejos(festejosData);
+      const { data: festejosData, error: errorFestejos } = await supabase
+        .from('festejos')
+        .select('*');
+      if (errorFestejos) setError('Error al cargar festejos.');
+      else setFestejos(festejosData || []);
       setLoading(false);
     };
     fetchAdminData();
@@ -83,8 +77,10 @@ export default function AdminPanel() {
       <AnimatedBackground />
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10">
         {/* Logo centrado, sin botón aquí */}
-        <div className="flex flex-col items-center justify-center mb-6">
-          <img src="/logo.png" alt="Logo CRWapp" className="mx-auto mb-2" style={{ height: '3.5rem', width: 'auto', display: 'block' }} />
+        <div className="flex flex-col items-center mb-6">
+          <div className="mb-2 flex items-center justify-center w-28 h-28 relative">
+            <img src="/logo.png" alt="Logo CRWapp" className="w-20 h-20 object-contain" style={{ zIndex: 2, background: 'none', boxShadow: 'none' }} />
+          </div>
         </div>
         {/* Icono temático premium para panel de administración */}
         <div className="flex flex-col items-center mb-4 mt-2">

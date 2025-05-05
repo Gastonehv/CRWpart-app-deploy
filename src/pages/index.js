@@ -2,48 +2,39 @@ import AnimatedBackground from '../components/AnimatedBackground';
 import WowButton from '../components/WowButton';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Logo from '../components/Logo';
 
 export default function Home() {
   return (
-    <div className="relative flex flex-col min-h-screen items-center justify-center overflow-hidden bg-white">
-      <div className="animated-bg">
-        <div className="bubble bubble1"></div>
-        <div className="bubble bubble2"></div>
-        <div className="bubble bubble3"></div>
-      </div>
-      <main className="flex flex-col items-center justify-center min-h-screen py-8 px-4 bg-white/70 relative z-10">
-        <div className="flex flex-col items-center mb-8">
-          <div className="logo-glow mb-4 flex justify-center">
-            <img src="/logo.png" alt="Logo CRWapp" style={{height: '6rem', width: 'auto', display: 'block', maxWidth: '90vw'}} />
-          </div>
-          <div
-            className="slogan text-center font-extrabold text-2xl mb-2 text-purple-800 drop-shadow-lg"
-            style={{
-              color: '#4c1d95',
-              letterSpacing: '0.04em',
-              textShadow: '0 2px 8px #e0e7ef, 0 1px 0 #fff'
-            }}
-          >
-            Celebra fácil. Celebra a tu manera.
-          </div>
-          <h1
-            className="text-4xl font-extrabold mb-2 font-display text-center animated-gradient-home"
-          >
-            Bienvenido a CRWapp
-          </h1>
-          <p className="text-lg text-gray-500 mb-6 text-center max-w-sm" style={{fontSize: '1.18rem'}}>
-            Organiza, invita y celebra con estilo. Una experiencia única, moderna y fácil de usar.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 w-full max-w-xs mx-auto">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-black">
+      <div className="flex flex-col items-center mb-8">
+        <Logo />
+        <h1 className="text-4xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>CRW Party</h1>
+        <p className="text-lg text-gray-200 text-center mb-4">Organiza, invita y celebra fiestas inolvidables.<br />Plataforma moderna, segura y fácil de usar.</p>
+        <div className="flex gap-4">
           <Link href="/auth/login" passHref legacyBehavior>
-            <a className="btn-accent text-center py-3 text-lg font-bold">Iniciar sesión</a>
+            <a className="dashboard-btn px-6 py-2 text-lg" aria-label="Iniciar sesión">Iniciar sesión</a>
           </Link>
           <Link href="/auth/register" passHref legacyBehavior>
-            <a className="btn-accent text-center py-3 text-lg font-bold">Crear cuenta</a>
+            <a className="dashboard-btn px-6 py-2 text-lg" aria-label="Crear cuenta">Crear cuenta</a>
           </Link>
         </div>
-      </main>
+      </div>
+      <style jsx global>{`
+        .dashboard-btn {
+          background: linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff);
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          padding: 0.5rem 1rem;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: background-position 0.2s ease-in-out;
+        }
+        .dashboard-btn:hover {
+          background-position: 100% 0;
+        }
+      `}</style>
     </div>
   );
 }

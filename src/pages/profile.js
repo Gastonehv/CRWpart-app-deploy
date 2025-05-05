@@ -216,6 +216,19 @@ export default function Profile() {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e9e6ff] to-[#d7f8ff] overflow-hidden pt-6 sm:pt-10">
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10">
+        {/* Logotipo perfil: posición y tamaño estandarizados, glow sutil, animación de entrada */}
+        <div className="flex flex-col items-center justify-center mb-6 mt-10" style={{ minHeight: '120px' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, type: 'spring' }}
+            className="logo-glow flex items-center justify-center w-28 h-28 rounded-2xl shadow-xl bg-white/90 relative p-0"
+            style={{ margin: '0 auto' }}
+          >
+            <img src="/logo.png" alt="CRW party logo" className="w-[95%] h-[95%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+            <div className="absolute inset-0 rounded-2xl shadow-[0_0_28px_5px_rgba(167,139,250,0.16)] pointer-events-none" style={{ zIndex: 1 }} />
+          </motion.div>
+        </div>
         <div className="flex flex-col items-center mb-4">
           <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-purple-100 to-cyan-100 shadow-lg mb-2 animate-bounce-slow">
             {/* Ícono de perfil bicolor */}

@@ -104,16 +104,30 @@ export default function Register() {
       };
     }
     // 1. Crear usuario en Supabase Auth
-    const { data, error } = await supabase.auth.signUp({
-      email: form.email,
-      password: form.password,
-      options: {
-        data: userData,
-      },
-    });
-    if (error) {
+    let data = null, error = null;
+    try {
+      ({ data, error } = await supabase.auth.signUp({
+        email: form.email,
+        password: form.password,
+        options: {
+          data: userData,
+        },
+      }));
+      if (error) {
+        setLoading(false);
+        setFeedback('Error de registro: ' + error.message);
+        console.error('Supabase signUp error:', error);
+        return;
+      }
+      if (!data?.user) {
+        setLoading(false);
+        setFeedback('No se pudo crear el usuario. Intenta de nuevo o contacta soporte.');
+        return;
+      }
+    } catch (err) {
       setLoading(false);
-      setFeedback(error.message);
+      setFeedback('Error inesperado: ' + (err.message || err.toString()));
+      console.error('Excepción en signUp:', err);
       return;
     }
     // 2. Crear perfil en la tabla profiles
@@ -136,7 +150,9 @@ export default function Register() {
     }
     setLoading(false);
     setSuccess(true);
-    setFeedback('¡Registro exitoso! Revisa tu correo para confirmar tu cuenta.');
+    setFeedback('¡Registro exitoso! Si no recibes el correo de confirmación revisa tu bandeja de SPAM o contacta soporte.');
+    // Log para depuración
+    console.log('Registro exitoso. Data Supabase:', data);
   };
 
   if (typeof type === 'undefined' || (type !== 'festejado' && type !== 'invitado')) {

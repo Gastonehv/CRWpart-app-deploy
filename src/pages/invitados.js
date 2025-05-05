@@ -72,8 +72,20 @@ export default function Invitados() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#d7fff2] to-[#d7eaff] overflow-hidden pt-6 sm:pt-10">
       <AnimatedBackground />
-      <div className="flex justify-center mt-6 mb-4">
-        <img src="/logo.png" alt="Logo CRWapp" className="h-16 w-auto drop-shadow-lg rounded-xl" style={{ objectFit: 'contain' }} />
+      <div className="flex flex-col items-center mb-8 mt-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+          className="flex items-center justify-center w-36 h-36 relative p-0"
+        >
+          <img src="/logo.png" alt="CRW party logo" className="w-[97%] h-[97%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+          <div className="absolute inset-0 rounded-2xl shadow-[0_0_28px_5px_rgba(167,139,250,0.16)] pointer-events-none" style={{ zIndex: 1 }} />
+        </motion.div>
+        <h1 className="text-3xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Invitados</h1>
+      </div>
+      <div className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-8 flex flex-col items-center justify-center">
+        <p className="text-base text-gray-700 text-center mb-4">Gestiona tu lista de invitados y confirma su asistencia.</p>
       </div>
       <BotonHome />
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10 flex flex-col items-center justify-center">
@@ -81,10 +93,6 @@ export default function Invitados() {
           {(loading || loadingFestejos) && <div className="text-center text-gray-500">Cargando...</div>}
           {errorFestejos && <div className="text-center text-red-500 mb-4">{errorFestejos}</div>}
           {error && <div className="text-center text-red-500 mb-4">{error}</div>}
-          {/* Título principal premium con degradado */}
-          <h2 className="text-2xl font-bold text-center mb-2 bg-gradient-to-r from-orange-400 via-pink-500 to-fuchsia-600 bg-clip-text text-transparent drop-shadow-md animate-gradient-x">
-            Invitados de {getDisplayName(user)}
-          </h2>
           {/* Mensaje de instrucción premium con icono de usuarios/personas */}
           <div className="flex flex-col items-center mb-4">
             <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-pink-100 to-fuchsia-200 shadow-lg mb-2 animate-bounce-slow">

@@ -215,24 +215,24 @@ export default function MisFestejos() {
 
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#fffbe0] to-[#ffd6d6] overflow-hidden pt-6 sm:pt-10">
-      <div className="flex justify-center mt-6 mb-4">
-        <img src="/logo.png" alt="Logo CRWapp" className="h-16 w-auto drop-shadow-lg rounded-xl" style={{ objectFit: 'contain' }} />
+      <div className="flex flex-col items-center mb-8 mt-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+          className="flex items-center justify-center w-36 h-36 relative p-0"
+        >
+          <img src="/logo.png" alt="CRW party logo" className="w-[97%] h-[97%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+          <div className="absolute inset-0 rounded-2xl shadow-[0_0_28px_5px_rgba(167,139,250,0.16)] pointer-events-none" style={{ zIndex: 1 }} />
+        </motion.div>
+        <h1 className="text-3xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Mis Festejos</h1>
+      </div>
+      <div className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-8 flex flex-col items-center justify-center">
+        <h2 className="text-3xl font-extrabold text-center mb-2 text-pink-500 font-display">Mis Festejos</h2>
+        <p className="text-base text-gray-700 text-center mb-4">Revisa, gestiona y asegura tus celebraciones. Todo bajo control, sin estrés.</p>
       </div>
       <main className="w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10 flex flex-col items-center justify-center">
         <div className="w-full">
-          {/* Icono temático para mis festejos */}
-          <div className="flex flex-col items-center mb-4">
-            <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-100 to-pink-100 shadow-lg mb-2 animate-bounce-slow">
-              {/* Ícono de calendario bicolor */}
-              <svg width="28" height="28" fill="none" viewBox="0 0 24 24">
-                <rect x="3" y="5" width="18" height="16" rx="2" stroke="#f472b6" strokeWidth="2"/>
-                <path stroke="#facc15" strokeWidth="2" strokeLinecap="round" d="M16 3v4M8 3v4M3 9h18"/>
-              </svg>
-            </span>
-            <h2 className="text-2xl font-bold text-center mb-2 bg-gradient-to-r from-pink-400 via-yellow-400 to-fuchsia-600 bg-clip-text text-transparent drop-shadow-md animate-gradient-x">
-              Mis festejos de {getDisplayName(user, profile)}
-            </h2>
-          </div>
           {/* Mensaje premium claro y sin redundancias */}
           <div className="flex flex-col items-center mb-4">
             <p className="text-center text-gray-600 text-base font-medium bg-white/70 px-4 py-2 rounded-xl shadow border border-fuchsia-100 animate-fadein">

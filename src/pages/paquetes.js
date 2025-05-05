@@ -30,11 +30,10 @@ const PaquetesPage = () => {
       ],
       precio: 3999,
       fotos: [
-        '/demo-media/demo-foto1.jpg',
-        '/demo-media/demo-foto2.jpg',
+        '/paquetes/paquete1.png',
       ],
-      video: '/demo-media/demo-video1.mp4',
-      poster: '/demo-media/demo-foto2.jpg',
+      video: '',
+      poster: '/paquetes/paquete1.png',
     },
     {
       nombre: 'Summer Pool',
@@ -90,65 +89,60 @@ const PaquetesPage = () => {
   ];
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e6e6ff] to-[#fff9d7] overflow-hidden pt-6 sm:pt-10">
-      <main className="pt-6 sm:pt-10 w-full max-w-xs mx-auto bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-10 flex flex-col gap-7">
-        <div className="flex flex-col items-center mb-2">
-          <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-tr from-yellow-100 to-purple-100 shadow-lg mb-2 animate-bounce-slow">
-            {/* Ícono premium de ticket de fiesta */}
-            <svg width="34" height="34" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="3" y="7" width="18" height="13" rx="3" fill="#a78bfa" fillOpacity="0.13" stroke="#a21caf" strokeWidth="1.5"/>
-              <path d="M6.5 12a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Zm7.5 0a1.5 1.5 0 1 0 3 0 1.5 1.5 0 0 0-3 0Z" fill="#a21caf"/>
-              <path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7" stroke="#a21caf" strokeWidth="1.3" strokeLinecap="round"/>
-            </svg>
-          </span>
-          <h1 className="text-3xl font-extrabold text-center mb-2 text-blue-800">Compra de paquetes</h1>
+    <div className="relative min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#e6e6ff] to-[#fff9d7] overflow-hidden pt-2 sm:pt-4 pb-6">
+      <div className="flex flex-col items-center mb-8 mt-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, type: 'spring' }}
+          className="flex items-center justify-center w-36 h-36 relative p-0"
+        >
+          <img src="/logo.png" alt="CRW party logo" className="w-[97%] h-[97%] object-contain p-0 m-0" style={{ zIndex: 2 }} />
+          <div className="absolute inset-0 rounded-2xl shadow-[0_0_28px_5px_rgba(167,139,250,0.16)] pointer-events-none" style={{ zIndex: 1 }} />
+        </motion.div>
+        <h1 className="text-3xl font-extrabold text-center mb-2" style={{background: 'linear-gradient(90deg, #ff6b00, #ffe600, #00e0ff, #a259ff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>Paquetes</h1>
+      </div>
+      {/* HEADER BLOQUE BLANCO */}
+      <div className="w-full max-w-xs mx-auto flex flex-col items-center">
+        <div className="bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-6 w-full flex flex-col items-center">
+          <h2 className="text-3xl font-extrabold text-center mb-2 text-purple-600 font-display">Catálogo</h2>
+          <p className="text-base text-gray-700 text-center mb-0">Selecciona el paquete ideal para tu evento y descubre todos los beneficios.</p>
         </div>
-        {loading ? (
-          <div className="text-center py-12 text-lg text-gray-600">Cargando paquetes...</div>
-        ) : error ? (
-          <div className="text-center py-12 text-lg text-red-500">{error}</div>
-        ) : paquetes.length === 0 ? (
-          <div className="text-center py-12 text-lg text-gray-500">No hay paquetes activos disponibles en este momento.</div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            {paquetes.map((p, idx) => (
-              <div key={p.nombre} className="rounded-2xl premium-shadow bg-white p-4 mb-6 flex flex-col gap-2 border border-purple-100 hover:border-blue-400 transition-all">
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="text-2xl">{p.icono}</span>
-                  <span className="text-lg font-extrabold text-purple-700">{p.nombre}</span>
-                  <span className="ml-auto text-xl font-bold text-green-600">${p.precio}</span>
-                  <button
-                    className="ml-2 px-2 py-1 rounded-lg bg-gradient-to-r from-fuchsia-100 to-cyan-100 text-fuchsia-700 font-bold text-xs shadow focus:outline-none focus:ring-2 focus:ring-fuchsia-200 hover:scale-105 transition"
-                    aria-label={`Ver detalles de ${p.nombre}`}
-                    onClick={() => setDetallePaquete(p)}
-                  >
-                    {/* Ícono de información "i" premium */}
-                    <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="10" stroke="#a78bfa" strokeWidth="2" fill="#f3e8ff"/>
-                      <text x="12" y="16" textAnchor="middle" fontSize="13" fontFamily="sans-serif" fill="#a78bfa" fontWeight="bold">i</text>
-                    </svg>
-                  </button>
-                </div>
-                <div className="mb-1 text-gray-700 italic text-sm">{p.descripcion}</div>
-                <ul className="list-disc ml-6 text-gray-600 text-xs mb-1">
-                  {p.beneficios.map((b,i) => <li key={i}>{b}</li>)}
-                </ul>
+        {/* LISTA DE PAQUETES */}
+        {paquetes && paquetes.length > 0 ? (
+          paquetes.map((paquete, idx) => (
+            <div key={idx} className="bg-white/90 rounded-3xl shadow-2xl px-4 py-6 mb-6 w-full flex flex-col items-center">
+              <div className="flex items-center gap-2 mb-2 w-full justify-center">
+                <span className="text-2xl">{paquete.icono}</span>
+                <span className="text-lg font-bold text-purple-600 text-center">{paquete.nombre}</span>
+                <span className="ml-auto text-lg font-extrabold text-green-500">${paquete.precio}</span>
               </div>
-            ))}
+              <div className="text-gray-700 text-sm mb-2 text-center w-full">{paquete.descripcion}</div>
+              <ul className="list-disc pl-5 text-gray-600 text-xs mb-2 w-full">
+                {paquete.beneficios.map((b, i) => (
+                  <li key={i} className="text-center w-full">{b}</li>
+                ))}
+              </ul>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white/90 rounded-3xl shadow-2xl px-4 py-8 mb-6 w-full flex flex-col items-center justify-center text-gray-400">
+            No hay paquetes disponibles.
           </div>
         )}
-        <div className="flex flex-col gap-6">
+        {/* SELECCIÓN DE PAQUETES Y COMPRA */}
+        <div className="w-full flex flex-col items-center">
           <PaqueteSelector paquetes={paquetes} onChange={handleSelector} />
-          <div className="flex flex-col gap-2">
-            <label className="block font-semibold mb-1 text-gray-700">¿Para qué festejo es la compra?</label>
+          <div className="flex flex-col gap-2 w-full mt-4">
+            <label className="block font-semibold mb-1 text-gray-700 text-center">¿Para qué festejo es la compra?</label>
             <select
-              className="w-full rounded-xl border border-purple-200 px-4 py-3 text-base text-gray-700 bg-white/80 shadow focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all outline-none"
+              className="w-full rounded-xl border border-purple-200 px-4 py-3 text-base text-gray-700 bg-white/80 shadow focus:ring-2 focus:ring-purple-300 focus:border-purple-400 transition-all outline-none text-left"
               value={festejo}
               onChange={e => setFestejo(e.target.value)}
             >
               <option value="">Selecciona un festejo</option>
               {festejosEjemplo.map(f => (
-                <option key={f.id} value={f.id}>
+                <option key={f.id} value={f.id} className="text-left">
                   {f.nombre} - {f.fecha}
                 </option>
               ))}
@@ -156,14 +150,14 @@ const PaquetesPage = () => {
           </div>
         </div>
         <button
-          className="mt-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-xl shadow-lg hover:scale-105 transition disabled:opacity-60"
+          className="mt-4 w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-xl shadow-lg hover:scale-105 transition disabled:opacity-60"
           disabled={total === 0 || !festejo}
         >
           Comprar
         </button>
         {total === 0 && <div className="text-center text-red-500 mt-2">Selecciona al menos un paquete para continuar.</div>}
         {!festejo && <div className="text-center text-orange-500 mt-2">Selecciona un festejo para asociar la compra.</div>}
-      </main>
+      </div>
       <PaqueteDetailModal open={!!detallePaquete} onClose={() => setDetallePaquete(null)} paquete={detallePaquete} />
       <BotonHome />
     </div>

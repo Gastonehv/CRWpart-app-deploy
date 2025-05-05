@@ -8,12 +8,12 @@ export default function RegisterType() {
       <AnimatedBackground />
       <main className="z-10 w-full max-w-md mx-auto px-4 py-12 flex flex-col items-center">
         <motion.img
-          src="/logo.svg"
+          src="/logo.png"
           alt="CRW party logo"
           initial={{ opacity: 0, scale: 0.7 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, type: 'spring' }}
-          className="w-28 h-28 mb-6 drop-shadow-xl rounded-3xl bg-white/30 p-2"
+          className="w-28 h-28 mb-6 rounded-3xl p-2"
           style={{ objectFit: 'contain' }}
         />
         <motion.h2 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="text-3xl font-extrabold text-gray-700 mb-4 text-center font-display">
